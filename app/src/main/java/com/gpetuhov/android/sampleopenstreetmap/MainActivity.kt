@@ -6,6 +6,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import com.pawegio.kandroid.defaultSharedPreferences
 import kotlinx.android.synthetic.main.activity_main.*
 import org.osmdroid.config.Configuration
+import org.osmdroid.views.CustomZoomButtonsController
+import org.osmdroid.util.GeoPoint
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +31,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mapView.setTileSource(TileSourceFactory.MAPNIK)
+
+        // Init zoom controls
+        mapView.zoomController?.setVisibility(CustomZoomButtonsController.Visibility.SHOW_AND_FADEOUT)
+
+        // Ability to zoom with 2 fingers
+        mapView.setMultiTouchControls(true)
+
+        // Move map to default point and zoom
+        val mapController = mapView.controller
+        mapController?.setZoom(9.5)
+        val startPoint = GeoPoint(48.8583, 2.2944)
+        mapController?.setCenter(startPoint)
     }
 
     // Don't forget to call mapView.onResume() and onPause()
