@@ -2,11 +2,43 @@ package com.gpetuhov.android.sampleopenstreetmap
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import com.pawegio.kandroid.defaultSharedPreferences
+import kotlinx.android.synthetic.main.activity_main.*
+import org.osmdroid.config.Configuration
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Don't forget to check "dangerous" permissions first, before map is created
+        // (not needed in this example)
+
+        // Load/initialize the osmdroid configuration
+        Configuration.getInstance().load(applicationContext, application.defaultSharedPreferences)
+        // setting this before the layout is inflated is a good idea
+        // it 'should' ensure that the map has a writable location for the map cache, even without permissions
+        // if no tiles are displayed, you can try overriding the cache path using Configuration.getInstance().setCachePath
+        // see also StorageUtils
+        // note, the load method also sets the HTTP User Agent to your application's package name,
+        // abusing osm's tile servers will get you banned based on this string
+
+        // Inflate and create the map
+        setContentView(R.layout.activity_main)
+
+        mapView.setTileSource(TileSourceFactory.MAPNIK)
+    }
+
+    // Don't forget to call mapView.onResume() and onPause()
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
     }
 }

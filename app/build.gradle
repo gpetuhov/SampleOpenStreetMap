@@ -32,4 +32,7 @@ dependencies {
 
     // KAndroid
     implementation 'com.pawegio.kandroid:kandroid:0.8.8@aar'
+
+    // Open Street Map
+    implementation 'org.osmdroid:osmdroid-android:6.1.0'
 }
